@@ -40,6 +40,9 @@
             Name = "Form1";
             ShowInTaskbar = false;
             Text = "Form1";
+            FormClosing += Form1_FormClosing;
+            KeyDown += Form1_KeyDown;
+            MouseDown += Form1_MouseDown;
             ResumeLayout(false);
         }
 
