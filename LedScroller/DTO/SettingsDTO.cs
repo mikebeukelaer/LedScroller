@@ -14,6 +14,6 @@ namespace LedScroller.DTO
 
         public int Height { get; set; } = 85;
         public int Width { get; set; } = 800;
-        public int FontSize { get; set; } = 60;
+        public int FontSize { get; set; } = 56;
     }
 }

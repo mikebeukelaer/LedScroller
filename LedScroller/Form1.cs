@@ -54,6 +54,9 @@ namespace LedScroller
             _maxIterations = _settings.Iterations;
 
             gradBrush = new LinearGradientBrush(new Rectangle(0, 0, 200, _settings.Height), Color.FromName(_settings.Color1), Color.FromName(_settings.Color2), 45);
+           
+            _settings.FontSize = CalculateFontSize(_settings.Width, _settings.Height);
+
             drawFont = new Font("Lcd Phone", _settings.FontSize, FontStyle.Bold);
 
             //this.Width = 200;
@@ -64,7 +67,28 @@ namespace LedScroller
             SetupTimer();
         }
 
-        
+        private int CalculateFontSize(int  width, int height)
+        {
+            var bitmap = new Bitmap(width, height);
+            var g = Graphics.FromImage(bitmap);
+            var fontSize = 5;
+            var maxfontsize = 300;
+
+            for (int i = maxfontsize; i > fontSize; i--) 
+            { 
+                var testFont = new Font("Lcd Phone", i, FontStyle.Bold,GraphicsUnit.Pixel);
+
+                var testSize = g.MeasureString("W",testFont, _settings.Width);
+
+                if (_settings.Height-17 > (int)testSize.Height)
+                {
+                    return (int)testFont.Size;
+                }
+
+            }
+
+            return 60;
+        }
 
         private void InitializeTextRendering()
         {
