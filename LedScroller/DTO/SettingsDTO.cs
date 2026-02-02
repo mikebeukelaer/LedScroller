@@ -11,5 +11,9 @@ namespace LedScroller.DTO
         public int ScrollSpeed { get; set; }
         public string Color1 {  get; set; }
         public string Color2 { get; set; }
+
+        public int Height { get; set; } = 85;
+        public int Width { get; set; } = 800;
+        public int FontSize { get; set; } = 60;
     }
 }

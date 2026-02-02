@@ -25,8 +25,8 @@ namespace LedScroller
 
         private Bitmap textBitmap;
         private Graphics bitmapGraphics;
-        private Font drawFont = //new Font("LED Board-7", 27, FontStyle.Bold);
-         new Font("Lcd Phone", 30, FontStyle.Bold);
+        private Font drawFont;  //new Font("LED Board-7", 27, FontStyle.Bold);
+         
 
         private SolidBrush drawBrush = new SolidBrush(Color.Black);
         private LinearGradientBrush gradBrush;
@@ -53,11 +53,11 @@ namespace LedScroller
             scrollString = _settings.Message;
             _maxIterations = _settings.Iterations;
 
-          gradBrush = new LinearGradientBrush(new Rectangle(0, 0, 200, 50), Color.FromName(_settings.Color1), Color.FromName(_settings.Color2), 45);
-
+            gradBrush = new LinearGradientBrush(new Rectangle(0, 0, 200, _settings.Height), Color.FromName(_settings.Color1), Color.FromName(_settings.Color2), 45);
+            drawFont = new Font("Lcd Phone", _settings.FontSize, FontStyle.Bold);
 
             //this.Width = 200;
-            this.ClientSize = new Size(400, 50);
+            this.ClientSize = new Size(_settings.Width, _settings.Height);
             this.DoubleBuffered = true; // Prevents flickering
             InitializeTextRendering();
             SetLocation();
@@ -71,7 +71,7 @@ namespace LedScroller
             
 
             // Create an off-screen bitmap for rendering (adjust size as needed for your LED matrix)
-            textBitmap = new Bitmap(400, 50); // Example: 200 pixels wide, 8 pixels tall
+            textBitmap = new Bitmap(_settings.Width, _settings.Height); // Example: 200 pixels wide, 8 pixels tall
             bitmapGraphics = Graphics.FromImage(textBitmap);
             // Clear the background to black
             bitmapGraphics.FillRectangle(new SolidBrush(Color.Black), 0, 0, textBitmap.Width, textBitmap.Height);
@@ -133,22 +133,22 @@ namespace LedScroller
 
             var trans = 100;
 
-            bitmapGraphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), new Rectangle(0, 0, 399, 49));
+            bitmapGraphics.DrawRectangle(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), new Rectangle(0, 0, _settings.Width-1, _settings.Height-1));
             var rowHeight = 10;
             var currentTop = 0;
 
-            while (currentTop < 100)
+            while (currentTop < _settings.Height-1)
             {
-                bitmapGraphics.DrawLine(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), 0, currentTop, 399, currentTop);
+                bitmapGraphics.DrawLine(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), 0, currentTop, _settings.Width-1, currentTop);
                 currentTop += rowHeight;
             }
 
             var colWidth = 10;
             var currentLeft = 0;
 
-            while (currentLeft < 399)
+            while (currentLeft < _settings.Width-1)
             {
-                bitmapGraphics.DrawLine(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), currentLeft, 1, currentLeft, 99);
+                bitmapGraphics.DrawLine(new Pen(new SolidBrush(Color.FromArgb(trans, Color.LightGray)), 1), currentLeft, 1, currentLeft, _settings.Height);
                 currentLeft += colWidth;
             }
 
